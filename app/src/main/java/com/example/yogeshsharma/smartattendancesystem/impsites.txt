@@ -1,0 +1,4 @@
+https://github.com/aegis1980/WifiHotSpot/blob/master/app/src/main/java/com/fitc/wifihotspot/MainActivity.java
+https://github.com/linkedin/dexmaker/tree/master/dexmaker/src/main/java/com/android/dx
+https://github.com/Android-File-Share/FileShare/wiki/API-Usage
+https://github.com/Sriharia/SHAREthem/blob/master/demo/src/main/java/com/tml/sharethem/demo/DemoActivity.java

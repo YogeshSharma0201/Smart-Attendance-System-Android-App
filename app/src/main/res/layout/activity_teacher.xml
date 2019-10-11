@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".TeacherActivity">
+
+    <Button
+        android:id="@+id/button3"
+        android:layout_width="300dp"
+        android:layout_height="48dp"
+        android:layout_below="@+id/spinner"
+        android:layout_centerHorizontal="true"
+        android:layout_marginStart="70dp"
+        android:layout_marginTop="18dp"
+        android:layout_marginEnd="70dp"
+        android:backgroundTint="#F4511E"
+        android:clickable="true"
+        android:onClick="onStartHotspot"
+        android:text="Start hotspot"
+        android:textColor="#fff" />
+
+    <TextView
+        android:id="@+id/textView2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/button3"
+        android:layout_alignParentStart="true"
+        android:layout_marginStart="0dp"
+        android:layout_marginTop="32dp"
+        android:layout_marginRight="20dp"
+        android:minWidth="200dp"
+        android:text="TextView"
+        android:textAlignment="center"
+        android:textSize="20dp" />
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/recyclerView"
+        android:layout_width="match_parent"
+        android:layout_height="250dp"
+        android:layout_below="@+id/tableRoll"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginStart="0dp"
+        android:layout_marginTop="0dp"
+        android:layout_marginBottom="0dp"
+        android:fadeScrollbars="false"
+        android:scrollbars="vertical" />
+
+    <TextView
+        android:id="@+id/tableRoll"
+        android:layout_width="150dp"
+        android:layout_height="40dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginStart="0dp"
+        android:layout_marginTop="210dp"
+        android:background="@drawable/table_head_background"
+        android:lineHeight="40dp"
+        android:paddingHorizontal="15dp"
+        android:text="Roll"
+        android:textAlignment="center"
+        android:textColor="#fff"
+        android:textSize="20dp"
+        android:paddingVertical="8dp"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/tableName"
+        android:layout_width="240dp"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/tableRoll"
+        android:layout_alignBottom="@+id/tableRoll"
+        android:layout_marginStart="0dp"
+        android:layout_marginTop="0dp"
+        android:layout_marginBottom="0dp"
+        android:layout_toEndOf="@+id/tableRoll"
+        android:background="@drawable/table_head_background"
+        android:textColor="#fff"
+        android:paddingHorizontal="15dp"
+        android:text="Name"
+        android:textAlignment="center"
+        android:textFontWeight="600"
+        android:textSize="20dp"
+        android:paddingVertical="8dp"
+        android:textStyle="bold" />
+
+    <ProgressBar
+        android:id="@+id/progressBar2"
+        style="?android:attr/progressBarStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/recyclerView"
+        android:layout_alignBottom="@+id/recyclerView"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginStart="150dp"
+        android:layout_marginTop="89dp"
+        android:layout_marginEnd="150dp"
+        android:layout_marginBottom="90dp" />
+
+    <Spinner
+        android:id="@+id/spinner"
+        android:layout_width="200dp"
+        android:layout_height="48dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginStart="70dp"
+        android:layout_marginTop="29dp"
+        android:layout_marginEnd="70dp"
+        android:background="@drawable/bg_spinner"
+        android:textAlignment="center"
+        android:textColor="#fff" />
+
+</RelativeLayout>
