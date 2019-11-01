@@ -11,9 +11,9 @@
         android:id="@+id/button"
         android:layout_width="300dp"
         android:layout_height="70dp"
-        android:layout_alignParentTop="true"
+        android:layout_below="@+id/textView3"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="141dp"
+        android:layout_marginTop="14dp"
         android:backgroundTint="#F4511E"
         android:drawableLeft="@drawable/ic_icons8_attendance"
         android:text="Start taking attendance"
@@ -28,8 +28,34 @@
         android:layout_centerHorizontal="true"
         android:layout_marginTop="29dp"
         android:backgroundTint="#F4511E"
-        android:drawableLeft="@drawable/ic_hand"
-        android:text="Register attendance"
+        android:drawableLeft="@drawable/ic_newspaper"
+        android:text="View Reports"
         android:textColor="#fff"
         android:textSize="16sp" />
+
+    <Button
+        android:id="@+id/button3"
+        android:layout_width="300dp"
+        android:layout_height="70dp"
+        android:layout_below="@+id/button2"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="29dp"
+        android:backgroundTint="#F4511E"
+        android:drawableLeft="@drawable/ic_logout"
+        android:text="Log out"
+        android:textColor="#fff"
+        android:textSize="16sp" />
+
+    <TextView
+        android:id="@+id/textView3"
+        android:layout_width="300dp"
+        android:layout_height="70dp"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="54dp"
+        android:text="Hi Yogesh Sharma!"
+        android:textColor="#F4511E"
+        android:textAlignment="center"
+        android:fontFamily="cursive"
+        android:textSize="28sp" />
 </RelativeLayout>

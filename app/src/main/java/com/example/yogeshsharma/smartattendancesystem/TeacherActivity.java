@@ -3,6 +3,7 @@ package com.example.yogeshsharma.smartattendancesystem;
 import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.net.wifi.WifiManager;
@@ -13,6 +14,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.util.Pair;
 import android.view.View;
 import android.widget.AdapterView;
@@ -26,10 +28,20 @@ import android.widget.Toast;
 
 import com.fitc.wifihotspot.MyOnStartTetheringCallback;
 import com.fitc.wifihotspot.MyOreoWifiManager;
+import com.loopj.android.http.JsonHttpResponseHandler;
+import com.loopj.android.http.RequestParams;
+import com.loopj.android.http.TextHttpResponseHandler;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Vector;
+
+import cz.msebera.android.httpclient.Header;
 
 public class TeacherActivity extends AppCompatActivity {
     private Button startHotspot;
@@ -45,10 +57,15 @@ public class TeacherActivity extends AppCompatActivity {
     private ListAdapter listAdapter;
     ArrayList<Pair<String, String>> personNames = new ArrayList<>();
     HashMap<String, Pair<String, String>> dataBase;
-    String[] country = { "English", "Maths", "Science", "History"};
+    ArrayList<String> classes;
     private Spinner spin;
     private int state;
     private ProgressBar progressBar;
+    SharedPreferences sharedpreferences;
+    public static final String MyPREFERENCES = "MyPrefs";
+    JSONObject user = new JSONObject();
+    JSONArray classesTeaching;
+    Integer selectedClass = 0;
 
     @RequiresApi(api = Build.VERSION_CODES.O)
     private MyOreoWifiManager myOreoWifiManager;
@@ -58,7 +75,11 @@ public class TeacherActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_teacher);
         context = getApplicationContext();
-        init(context);
+        try {
+            init(context);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
     }
 
 
@@ -69,7 +90,41 @@ public class TeacherActivity extends AppCompatActivity {
         if(mWifiManager.isWifiEnabled())
             mWifiManager.setWifiEnabled(false);
 
+        RequestParams rp = new RequestParams();
+        try {
+            JSONObject jsonObject = classesTeaching.getJSONObject(selectedClass);
+            rp.add("id", jsonObject.getString("id"));
 
+            if(state == 1) {
+                rp.add("inSession", "false");
+            } else {
+                rp.add("inSession", "true");
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        Api.post("/api/classes/setSession", rp, new TextHttpResponseHandler() {
+            @Override
+            public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
+                System.out.println(responseString +" "+ throwable.getCause());
+            }
+
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, String responseString) {
+                System.out.println(responseString);
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        startTakingAttendance();
+                    }
+                });
+            }
+        });
+//
+    }
+
+    public void startTakingAttendance() {
         if(state == 1) {
             myOreoWifiManager.stopTethering();
             checkConnections.interrupt();
@@ -138,6 +193,11 @@ public class TeacherActivity extends AppCompatActivity {
         });
     }
 
+    private void onClassSelect(int idx) {
+        selectedClass = idx;
+
+    }
+
     private void displayToast(String str) {
         int duration = Toast.LENGTH_SHORT;
         Toast.makeText(context, str, duration).show();
@@ -148,7 +208,17 @@ public class TeacherActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
-    private void init(Context context) {
+    private void init(Context context) throws JSONException {
+        sharedpreferences = getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
+        String userString = sharedpreferences.getString("User", "{\"id\":1,\"firstName\":\"Yogesh\"}");
+        user = new JSONObject(userString);
+        user = user.getJSONObject("user");
+        classesTeaching = user.getJSONArray("classesTeaching");
+        classes = new ArrayList<>();
+        for(int i=0; i<classesTeaching.length(); i++) {
+            classes.add(classesTeaching.getJSONObject(i).getString("name"));
+        }
+//        System.out.println("classes" + classes);
         state = 0;
         startHotspot = findViewById(R.id.button3);
         wifiApManager = new WifiApManager(this);
@@ -173,7 +243,7 @@ public class TeacherActivity extends AppCompatActivity {
         spin.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-
+                onClassSelect(position);
             }
 
             @Override
@@ -181,7 +251,7 @@ public class TeacherActivity extends AppCompatActivity {
 
             }
         });
-        ArrayAdapter aa = new ArrayAdapter(this,R.layout.spinner_item,country);
+        ArrayAdapter aa = new ArrayAdapter(this,R.layout.spinner_item,classes);
         aa.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         //Setting the ArrayAdapter data on the Spinner
         spin.setAdapter(aa);
